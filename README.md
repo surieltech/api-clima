@@ -1,16 +1,51 @@
-# React + Vite
+# 🌦️ API Clima
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação moderna de previsão do tempo desenvolvida com **React + Vite**, consumindo dados em tempo real da API da OpenWeather.
 
-Currently, two official plugins are available:
+🔗 Deploy: https://surieltech.github.io/api-clima/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Sobre o Projeto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+O **API Clima** é uma aplicação frontend que permite consultar informações meteorológicas de qualquer cidade do mundo.
 
-## Expanding the ESLint configuration
+O projeto foi desenvolvido com foco em:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- ✔️ Interface moderna
+- ✔️ Experiência dinâmica baseada no clima
+- ✔️ Responsividade
+- ✔️ Boas práticas com React Hooks
+- ✔️ Consumo de API externa
+
+---
+
+## ✨ Funcionalidades
+
+- 🔍 Busca por cidade
+- 🌡️ Alternância entre °C e °F
+- 🌙 Detecção automática de dia/noite
+- 🎨 Background dinâmico baseado na condição climática
+- ⭐ Efeito de estrelas no modo noturno
+- 💨 Informações adicionais (vento e umidade)
+- 📱 Layout responsivo
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- React
+- Vite
+- CSS3
+- OpenWeather API
+
+---
+
+## 🌐 API Utilizada
+
+Os dados meteorológicos são fornecidos pela:
+
+OpenWeather → https://openweathermap.org/
+
+---
+

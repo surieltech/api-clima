@@ -1,11 +1,19 @@
 .weather{
     place-self: center;
     padding: 40px;
-    border-radius: 10px;
-    background-image: linear-gradient(45deg, #2f4680, #500ae4);
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: 0.5s ease;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.6s ease-in-out, transform 0.3s ease;
+    color: white;
+}
+
+.weather:hover{
+    transform: scale(1.02);
 }
 
 .search-bar{
@@ -72,4 +80,181 @@
 .weather-data .col img{
     width: 26px;
     margin-top: 10px;
+}
+
+/* day */
+.weather.day.clear{
+    background: linear-gradient(135deg, #56ccf2, #2f80ed);
+}
+
+.weather.day.clouds{
+    background: linear-gradient(135deg, #bdc3c7, #2c3e50);
+}
+
+.weather.day.rain{
+    background: linear-gradient(135deg, #4b79a1, #283e51);
+}
+
+.weather.day.snow{
+    background: linear-gradient(135deg, #e6dada, #274046);
+}
+
+.weather.day.thunderstorm{
+    background: linear-gradient(135deg, #232526, #414345);
+}
+
+.weather.day.mist,
+.weather.day.haze,
+.weather.day.fog,
+.weather.day.smoke,
+.weather.day.dust,
+.weather.day.sand,
+.weather.day.ash{
+    background: linear-gradient(135deg, #757f9a, #d7dd);
+}
+
+
+.weather.haze,
+.weather.fog,
+.weather.smoke,
+.weather.dust,
+.weather.sand,
+.weather.ash {
+    background: linear-gradient(135deg, #757f9a, #d7dd);
+}
+
+/* night */
+.weather.night.clear{
+    background: linear-gradient(135deg, #141e30, #243b55);
+}
+
+.weather.night.clouds{
+    background: linear-gradient(135deg, #232526, #414345);
+}
+
+.weather.night.rain{
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+.weather.night.snow{
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+}
+
+.weather.night.thunderstorm{
+    background: linear-gradient(135deg, #000000, #434343);
+}
+
+.weather.night.mist,
+.weather.night.haze,
+.weather.night.fog,
+.weather.night.smoke,
+.weather.night.dust,
+.weather.night.sand,
+.weather.night.ash{
+    background: linear-gradient(135deg, #3a3a3a, #1c1c1c);
+}
+
+/* star effect */
+.weather.night::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(white 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+    pointer-events: none;
+    animation: starsMove 60s linear infinite;
+}
+
+@keyframes starsMove{
+    from{
+        background-position: 0 0;
+    }
+    to{
+        background-position: 1000px 1000px;
+    }
+}
+
+/* toggle for change units */
+.unit-toggle{
+    position: relative;
+    width: 110px;
+    height: 45px;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    cursor: pointer;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+    border: none;
+    outline: none;
+}
+
+.unit-toggle span{
+    z-index: 2;
+    color: white;
+    font-size: 20px;
+}
+
+.toggle-circle{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    top: 2.5px;
+    left: 3px;
+    transition: 0.3s ease;
+}
+
+/* posição quando estiver em °F */
+.unit-toggle.right .toggle-circle{
+    left: 67px;
+}
+
+/* responsive design */
+@media (max-width: 600px){
+
+    .weather{
+        width: 90%;
+        padding: 25px;
+    }
+
+    .temperature{
+        font-size: 60px;
+    }
+
+    .location{
+        font-size: 28px;
+    }
+
+    .weather-data{
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .search-bar{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .unit-toggle{
+        width: 100px;
+        height: 40px;
+    }
+
+    .toggle-circle{
+        width: 35px;
+        height: 35px;
+    }
+
+    .unit-toggle.right .toggle-circle{
+        left: 60px;
+    }
 }

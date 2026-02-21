@@ -13,7 +13,10 @@ import humidity_icon from '../assets/humidity.png'
 const Weather = () => {
 
     const inputRef = useRef()
-    const [weatherData, setWeatherData] = useState(false);
+    const [weatherData, setWeatherData] = useState(null);
+    // to change units
+    const [unit, setUnit] = useState("metric")
+    const [city, setCity] = useState("Manaus")
 
     const allIcons = {
         "01d": clear_icon,
@@ -37,8 +40,11 @@ const Weather = () => {
             alert("Enter City Name");
             return;
         }
+
+        setCity(city);
+
         try {
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_APP_ID}`;
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${import.meta.env.VITE_APP_ID}`;
 
             const response = await fetch(url);
             const data = await response.json();
@@ -48,17 +54,27 @@ const Weather = () => {
                 return;
             }
 
+            //get my own icons
             console.log(data);
             const icon = allIcons[data.weather[0].icon] || clear_icon;
+
+            //detect if its night
+            const currentTime = data.dt;
+            const sunrise = data.sys.sunrise;
+            const sunset = data.sys.sunset;
+
+            const isNight = currentTime < sunrise || currentTime > sunset;
 
             setWeatherData({
                 humidity: data.main.humidity,
                 windSpeed: data.wind.speed,
                 temperature: Math.floor(data.main.temp),
                 // pressure:
-                // feelsLike:
+                feelsLike: Math.floor(data.main.feels_like),
                 location: data.name,
-                icon: icon
+                icon: icon,
+                condition: data.weather[0].main,
+                isNight: isNight
             })
 
         } catch (error) {
@@ -69,21 +85,49 @@ const Weather = () => {
     }
 
     useEffect(()=>{
+        search(city);
+    }, [unit])
+
+    useEffect(()=>{
         search("Manaus");
     },[])
 
   return (
-    <div className='weather'> 
+    <div className={`weather 
+        ${weatherData ? weatherData.condition.toLowerCase() : ""} 
+        ${weatherData?.isNight ? "night" : "day"}
+    `}>
+
         <div className='search-bar'>
             <input ref={inputRef} type='text' placeholder='Search'></input>
             <img src={search_icon} alt="" onClick={()=>search(inputRef.current.value)}></img>
+
+            {/* change unit button */}
+            <button
+            className={`unit-toggle ${unit === "metric" ? "left" : "right"}`}
+            onClick={() => setUnit(unit === "metric" ? "imperial" : "metric")}
+            aria-label="change temperature unit"
+            >
+            <div className="toggle-circle"></div>
+            <span>°C</span>
+            <span>°F</span>
+            </button>
+
         </div>
+        
 
         {weatherData?<>
         {/* if true: */}
-        {/* temperature/location */}
-        <img src={clear_icon} alt="" className='weather-icon'/>
-        <p className='temperature'>{weatherData.temperature} °</p>
+        {/* temperature/feels like/location */}
+        <img src={weatherData.icon} alt="" className='weather-icon'/>
+         <p className='temperature'>
+            {weatherData.temperature}°
+            {unit === "metric" ? "C" : "F"}
+        </p>
+        <p>
+            Feels like: {weatherData.feelsLike}°
+            {unit === "metric" ? "C" : "F"}
+        </p>
         <p className='location'>{weatherData.location}</p>
 
         {/* extra information/details */}
@@ -98,7 +142,9 @@ const Weather = () => {
             <div className="col">
                 <img src={wind_icon} alt="" />
                 <div>
-                    <p>{weatherData.windSpeed} km/h</p>
+                     <p>
+                        {weatherData.windSpeed} {unit === "metric" ? "m/s" : "mph"}
+                    </p>
                     <span>Wind Speed</span>
                 </div>
             </div>
