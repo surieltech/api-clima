@@ -17,6 +17,7 @@ const Weather = () => {
     // to change units
     const [unit, setUnit] = useState("metric")
     const [city, setCity] = useState("Manaus")
+    const [localTime, setLocalTime] = useState("") 
 
     const allIcons = {
         "01d": clear_icon,
@@ -74,7 +75,8 @@ const Weather = () => {
                 location: data.name,
                 icon: icon,
                 condition: data.weather[0].main,
-                isNight: isNight
+                isNight: isNight,
+                timezone: data.timezone
             })
 
         } catch (error) {
@@ -92,14 +94,56 @@ const Weather = () => {
         search("Manaus");
     },[])
 
+    // real time clock
+    useEffect(() => {
+
+        if (!weatherData?.timezone) return
+
+        const updateTime = () => {
+
+            const now = new Date()
+
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000
+
+            const cityTime = new Date(utc + weatherData.timezone * 1000)
+
+            const formatted = cityTime.toLocaleString("en", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+            })
+
+            setLocalTime(formatted)
+        }
+
+        updateTime()
+        const interval = setInterval(updateTime, 1000)
+
+        return () => clearInterval(interval)
+
+    }, [weatherData])
+
+
   return (
     <div className={`weather 
         ${weatherData ? weatherData.condition.toLowerCase() : ""} 
         ${weatherData?.isNight ? "night" : "day"}
     `}>
 
+        <h1 className="app-title">Weather App</h1>
+
         <div className='search-bar'>
-            <input ref={inputRef} type='text' placeholder='Search'></input>
+            <input ref={inputRef} type='text' placeholder='Search'
+            // press enter to search 
+            onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                search(inputRef.current.value);
+                }
+            }}></input>
             <img src={search_icon} alt="" onClick={()=>search(inputRef.current.value)}></img>
 
             {/* change unit button */}
@@ -114,10 +158,10 @@ const Weather = () => {
             </button>
 
         </div>
-        
 
         {weatherData?<>
         {/* if true: */}
+        
         {/* temperature/feels like/location */}
         <img src={weatherData.icon} alt="" className='weather-icon'/>
          <p className='temperature'>
@@ -129,6 +173,8 @@ const Weather = () => {
             {unit === "metric" ? "C" : "F"}
         </p>
         <p className='location'>{weatherData.location}</p>
+
+        <p className="local-time">{localTime}</p>
 
         {/* extra information/details */}
         <div className="weather-data">
